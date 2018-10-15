@@ -5,7 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Test.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Test.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SignalRChat.Interface\SignalRChat.Interface.csproj" />
   </ItemGroup>
 
 </Project>
