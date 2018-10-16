@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using SignalRChat.Interface;
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -16,17 +16,16 @@ namespace SignalRChat_Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
+        HubConnection connection;
 
         public MainWindow()
         {
             InitializeComponent();
 
             connection = new HubConnectionBuilder()
-                .WithUrl("https://192.168.1.19:44326/ChatHub")
+                .WithUrl("https://192.168.1.19:8001/ChatHub")
                 .AddMessagePackProtocol()
                 .Build();
-
             connection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
