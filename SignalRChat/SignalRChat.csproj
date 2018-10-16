@@ -5,15 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Test.bmp" />
+    <None Remove="Test.jpg" />
     <None Remove="Test.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Test.bmp" />
+    <EmbeddedResource Include="Test.jpg" />
     <EmbeddedResource Include="Test.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="2.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>

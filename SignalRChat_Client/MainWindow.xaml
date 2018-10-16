@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SignalRChat_Client"
         mc:Ignorable="d"
         Title="SignalR Chat WPF Client" Height="436" Width="782">
-    <Grid Margin="0,0,193.333,50.667">
+    <!--<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="109*"/>
             <ColumnDefinition Width="288*"/>
@@ -18,6 +18,20 @@
         <TextBox x:Name="userTextBox" HorizontalAlignment="Left" Height="41" Margin="82,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
         <Label Content="User" HorizontalAlignment="Left" Height="31" Margin="39,63,0,0" VerticalAlignment="Top" Width="38"/>
         <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="19,120,0,0" VerticalAlignment="Top" Width="58"/>
-
+    </Grid>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image x:Name="Image_Local" Grid.Row="0"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="加载图片" Click="Button_Click" Margin="5"/>
+            <TextBox Grid.Column="1" x:Name="TextBox_Local" Margin="5"/>
+        </Grid>
     </Grid>
 </Window>

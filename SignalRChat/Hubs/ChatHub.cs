@@ -1,30 +1,42 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using SignalRChat.Interface;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SignalRChat.Hubs
 {
-    public class ChatHub : Hub<IChatClient>
+    public class ChatHub : Hub
     {
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.ReceiveMessage(user, message);
-            //await Clients.All.SendAsync("ReceiveMessage", user, message);
+            //await Clients.All.ReceiveMessage(user, message);
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public byte[] GetData()
+        //public string GetData()
+        //{
+        //    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SignalRChat.Test.bmp"))
+        //    {
+        //        var length = stream.Length;
+        //        using (BinaryReader br = new BinaryReader(stream))
+        //        {
+        //            return Convert.ToBase64String(br.ReadBytes((int)length));
+        //        }
+        //    }
+        //}
+
+        public async Task<byte[]> GetData()
         {
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SignalRChat.Test.png"))
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SignalRChat.Test.bmp"))
             {
-                int b = 0;
-                var data = new List<byte>();
-                while ((b = stream.ReadByte()) != -1)
+                var length = stream.Length;
+                using (BinaryReader br = new BinaryReader(stream))
                 {
-                    data.Add((byte)b);
+                    return await Task.Run(() => br.ReadBytes((int)length));
                 }
-                return data.ToArray();
             }
         }
 
