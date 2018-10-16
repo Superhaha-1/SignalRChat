@@ -27,7 +27,6 @@ namespace SignalRChat
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSignalR().AddMessagePackProtocol();
@@ -50,6 +49,13 @@ namespace SignalRChat
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseCors(builder => {
+                builder.WithOrigins("https://192.168.1.19")
+                    .AllowAnyHeader()
+                    .WithMethods("GET", "POST")
+                    .AllowCredentials();
+            });
 
             app.UseSignalR(routes =>
             {

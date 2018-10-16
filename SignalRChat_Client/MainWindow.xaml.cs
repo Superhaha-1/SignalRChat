@@ -23,7 +23,7 @@ namespace SignalRChat_Client
             InitializeComponent();
 
             connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:44326/ChatHub")
+                .WithUrl("https://192.168.1.19:44326/ChatHub")
                 .AddMessagePackProtocol()
                 .Build();
 
