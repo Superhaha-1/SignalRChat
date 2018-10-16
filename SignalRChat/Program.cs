@@ -14,7 +14,7 @@ namespace SignalRChat
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).UseUrls("https://192.168.1.19:8001").Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

@@ -50,13 +50,6 @@ namespace SignalRChat
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseCors(builder => {
-                builder.WithOrigins("https://192.168.1.19")
-                    .AllowAnyHeader()
-                    .WithMethods("GET", "POST")
-                    .AllowCredentials();
-            });
-
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("/chatHub");
