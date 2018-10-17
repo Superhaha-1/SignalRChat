@@ -30,7 +30,7 @@ namespace SignalRChat.Hubs
 
         public async Task<byte[]> GetData()
         {
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SignalRChat.Test.bmp"))
+            using (var stream = new FileStream(@"D:\Share\111.bmp", FileMode.Open))
             {
                 var length = stream.Length;
                 using (BinaryReader br = new BinaryReader(stream))
