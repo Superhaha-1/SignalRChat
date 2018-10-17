@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using SignalRChat.Interface;
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -16,35 +15,36 @@ namespace SignalRChat_Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
+        HubConnection connection;
 
         public MainWindow()
         {
             InitializeComponent();
 
             connection = new HubConnectionBuilder()
-                .WithUrl("https://192.168.1.19:44326/ChatHub")
+                .WithUrl("https://192.168.1.19:8001/ChatHub", options=>
+                {
+                })
                 .AddMessagePackProtocol()
                 .Build();
-
             connection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await connection.StartAsync();
             };
+
+            //忽略证书
+            ServicePointManager.ServerCertificateValidationCallback
+                      += (sender, cert, chain, error) => true;
+
+            //连接
+            connection.StartAsync();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void SetImage(byte[] data)
         {
-            await connection.StartAsync();
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            var data = await connection.InvokeAsync<byte[]>("GetData");
-            stopwatch.Stop();
             using (var stream = new MemoryStream(data))
             {
-                //var bitmap = new Bitmap(stream);
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = stream;
@@ -52,8 +52,34 @@ namespace SignalRChat_Client
                 bitmapImage.EndInit();
                 bitmapImage.Freeze();
                 Image_Local.Source = bitmapImage;
-                TextBox_Local.Text = stopwatch.ElapsedMilliseconds.ToString();
             }
+        }
+
+        private async void Button_WebApi_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var data = await connection.InvokeAsync<byte[]>("GetData");
+            stopwatch.Stop();
+            TextBox_Local.Text = stopwatch.ElapsedMilliseconds.ToString();
+            SetImage(data);
+        }
+
+        private void Button_Share_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            byte[] data = null;
+            using (var stream = new FileStream(@"\\192.168.1.19\share\111.bmp", FileMode.Open))
+            {
+                using (BinaryReader br = new BinaryReader(stream))
+                {
+                    data = br.ReadBytes((int)stream.Length);
+                }
+            }
+            stopwatch.Stop();
+            TextBox_Local.Text = stopwatch.ElapsedMilliseconds.ToString();
+            SetImage(data);
         }
 
         //public async Task ReceiveMessage(string user, string message)
